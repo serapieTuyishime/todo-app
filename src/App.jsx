@@ -37,13 +37,13 @@ function App() {
         window.localStorage.setItem("todos", JSON.stringify(todos));
     };
 
-    const changeTodoText = (id) => {
+    const todoTextUpdator = (id) => {
         setEditMode(true);
         let indexToEdit = todos.findIndex((el) => el.id === id);
         let { text: todotext } = todos[indexToEdit];
         setCurrentTodo({ text: todotext, id: id });
     };
-    const updateText = () => {
+    const updateTodoText = () => {
         if (currentTodo.text.trim() === "") {
             deleteOneTodo(currentTodo.id);
             return;
@@ -88,14 +88,14 @@ function App() {
                         }}
                         onKeyUp={(e) => {
                             if (e.key === "Enter") {
-                                editMode ? updateText() : increaseTodos();
+                                editMode ? updateTodoText() : increaseTodos();
                             }
                         }}
                     />
 
                     <span
                         onClick={() =>
-                            editMode ? updateText() : increaseTodos()
+                            editMode ? updateTodoText() : increaseTodos()
                         }
                         className="text-white bg-blue-600 font-extrabold text-3xl rounded-full w-8 h-8 grid place-content-center pb-2"
                     >
@@ -112,7 +112,7 @@ function App() {
                                 isChecked={todo.checkness}
                                 deleteOneTodo={deleteOneTodo}
                                 changeCheckness={changeCheckness}
-                                changeTodoText={changeTodoText}
+                                todoTextUpdator={todoTextUpdator}
                             />
                         );
                     })}

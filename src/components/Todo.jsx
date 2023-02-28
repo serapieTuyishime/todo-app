@@ -6,7 +6,7 @@ const Todo = ({
     deleteOneTodo,
     isChecked,
     changeCheckness,
-    changeTodoText,
+    todoTextUpdator,
 }) => {
     return (
         <span className="flex gap-4 items-center">
@@ -24,7 +24,7 @@ const Todo = ({
             </span>
             <span className="text-xl py-2 px-4 flex gap-2">
                 <span
-                    className={`text-red-400 `}
+                    className={`text-red-400 hover:cursor-pointer bg-gray-200 rounded-full p-2`}
                     onClick={() => {
                         deleteOneTodo(id);
                     }}
@@ -32,9 +32,9 @@ const Todo = ({
                     <FaTrash />
                 </span>
                 <span
-                    className={`text-green-400 `}
+                    className={`text-green-400 bg-gray-200 rounded-full p-2 hover:cursor-pointer`}
                     onClick={() => {
-                        changeTodoText(id);
+                        todoTextUpdator(id);
                     }}
                 >
                     <FaEdit />
