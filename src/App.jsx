@@ -5,11 +5,9 @@ import { nanoid } from "nanoid";
 
 function App() {
     const [todos, setTodos] = useState(() => {
-        return (
-            [...JSON.parse(window.localStorage.getItem("todos"))] || [
-                { text: "initial todo", id: null, checkness: false },
-            ]
-        );
+        return window.localStorage.getItem("todos")
+            ? [...JSON.parse(window.localStorage.getItem("todos"))]
+            : [{ text: "initial todo", id: null, checkness: false }];
     });
     const [currentTodo, setCurrentTodo] = useState({ text: "", id: null });
     const [editMode, setEditMode] = useState(false);
