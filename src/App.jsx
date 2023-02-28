@@ -1,12 +1,16 @@
 import "./App.css";
 import Todo from "./components/Todo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 
 function App() {
-    const [todos, setTodos] = useState([
-        { text: "initial todo", id: nanoid(), checkness: true },
-    ]);
+    const [todos, setTodos] = useState(() => {
+        return (
+            [...JSON.parse(window.localStorage.getItem("todos"))] || [
+                { text: "initial todo", id: null, checkness: false },
+            ]
+        );
+    });
     const [currentTodo, setCurrentTodo] = useState({ text: "", id: null });
     const [editMode, setEditMode] = useState(false);
     const increaseTodos = () => {
@@ -23,6 +27,14 @@ function App() {
             ...todos.slice(0, indexToDelete),
             ...todos.slice(indexToDelete + 1, todos.length),
         ]);
+    };
+    useEffect(() => {
+        updateLocalStorage();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [todos]);
+
+    const updateLocalStorage = () => {
+        window.localStorage.setItem("todos", JSON.stringify(todos));
     };
 
     const changeTodoText = (id) => {
@@ -44,6 +56,7 @@ function App() {
             checkness: checkness,
         };
         setEditMode(false);
+        setCurrentTodo({ text: "", id: null });
         setTodos([...todos]);
     };
 
@@ -59,7 +72,7 @@ function App() {
     };
     return (
         <div className="main">
-            <div className=" gap-4 pt-10 px-10 w-96 sm:w-[45rem] h-96 grid bg-white">
+            <div className="gap-4 md:gap-8 p-5 md:p-10 overflow-y-hidden h-[80%] my-auto w-full sm:w-9/12 grid bg-gray-100 rounded-3xl content-start">
                 <label className="text-gray-300 font-bold text-8xl">
                     todos
                 </label>
@@ -73,6 +86,11 @@ function App() {
                         onChange={(e) => {
                             handleTodoChange(e);
                         }}
+                        onKeyUp={(e) => {
+                            if (e.key === "Enter") {
+                                editMode ? updateText() : increaseTodos();
+                            }
+                        }}
                     />
 
                     <span
@@ -84,7 +102,7 @@ function App() {
                         +
                     </span>
                 </button>
-                <div className="grid gap-2 h-full overflow-y-auto">
+                <div className="grid gap-2 overflow-y-auto">
                     {todos.map((todo, index) => {
                         return (
                             <Todo

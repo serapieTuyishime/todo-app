@@ -1,5 +1,4 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { useState } from "react";
 
 const Todo = ({
     text = "This is the todo",
@@ -9,7 +8,6 @@ const Todo = ({
     changeCheckness,
     changeTodoText,
 }) => {
-    // const [isChecked, setIsChecked] = useState(false);
     return (
         <span className="flex gap-4 items-center">
             <input
