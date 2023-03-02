@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 
 function App() {
-    const [todos, setTodos] = useState(() => {
+    const loadLocalStorage = () => {
         return window.localStorage.getItem("todos")
             ? [...JSON.parse(window.localStorage.getItem("todos"))]
             : [{ text: "initial todo", id: null, checkness: false }];
-    });
+    };
+    const [todos, setTodos] = useState(loadLocalStorage);
     const [currentTodo, setCurrentTodo] = useState({ text: "", id: null });
     const [editMode, setEditMode] = useState(false);
     const increaseTodos = () => {
@@ -37,47 +38,54 @@ function App() {
 
     const todoTextUpdator = (id) => {
         setEditMode(true);
-        let indexToEdit = todos.findIndex((el) => el.id === id);
+        let indexToEdit = findTodoByID(id);
         let { text: todotext } = todos[indexToEdit];
-        setCurrentTodo({ text: todotext, id: id });
+        setCurrentTodo(updateCurrentTodo(todotext, id));
     };
     const updateTodoText = () => {
         if (currentTodo.text.trim() === "") {
             deleteOneTodo(currentTodo.id);
             return;
         }
-        let indexToEdit = todos.findIndex((el) => el.id === currentTodo.id);
+        let indexToEdit = findTodoByID(currentTodo.id);
         let { checkness } = todos[indexToEdit];
-        todos[indexToEdit] = {
-            text: currentTodo.text,
-            id: currentTodo.id,
-            checkness: checkness,
-        };
+        todos[indexToEdit] = updateCurrentTodo(
+            currentTodo.text,
+            currentTodo.id,
+            checkness
+        );
         setEditMode(false);
-        setCurrentTodo({ text: "", id: null });
+        setCurrentTodo(updateCurrentTodo("", null));
         setTodos([...todos]);
     };
+    const updateCurrentTodo = (text = "", id = null, checkness = false) => {
+        return checkness === undefined ? { text, id } : { text, id, checkness };
+    };
+    const findTodoByID = (id) => todos.findIndex((todo) => todo.id === id);
 
     const changeCheckness = (id) => {
-        let indexToEdit = todos.findIndex((el) => el.id === id);
+        let indexToEdit = findTodoByID(id);
         let { text, checkness } = todos[indexToEdit];
-        todos[indexToEdit] = { text: text, id: id, checkness: !checkness };
+        todos[indexToEdit] = updateCurrentTodo(text, id, !checkness);
         setTodos([...todos]);
     };
     const handleTodoChange = (e) => {
-        const { name, value } = e.target;
-        setCurrentTodo({ [name]: value, id: currentTodo.id });
+        const { value } = e.target;
+        setCurrentTodo(updateCurrentTodo(value, currentTodo.id));
     };
     return (
         <div className="main">
             <div className="gap-4 md:gap-8 p-5 md:p-10 overflow-y-hidden h-[80%] my-auto w-full sm:w-9/12 grid bg-gray-100 rounded-3xl content-start">
-                <label className="text-gray-300 font-bold text-8xl">
+                <label className="font-bold text-gray-300 text-8xl">
                     todos
                 </label>
-                <button className="rounded-full flex w-full gap-2 bg-white border shadow-slate-500 shadow-md h-14 px-8 py-2 items-center">
+                <form
+                    onSubmit={(e) => e.preventDefault()}
+                    className="flex items-center w-full gap-2 px-8 py-2 bg-white border rounded-full shadow-md shadow-slate-500 h-14"
+                >
                     <input
                         type="text"
-                        className="flex-grow px-2 outline-none h-full"
+                        className="flex-grow h-full px-2 outline-none"
                         placeholder="Add todo..."
                         value={currentTodo.text}
                         name="text"
@@ -91,15 +99,15 @@ function App() {
                         }}
                     />
 
-                    <span
+                    <button
                         onClick={() =>
                             editMode ? updateTodoText() : increaseTodos()
                         }
-                        className="text-white bg-blue-600 font-extrabold text-3xl rounded-full w-8 h-8 grid place-content-center pb-2"
+                        className="grid w-8 h-8 pb-2 text-3xl font-extrabold text-white bg-green-600 rounded-full place-content-center"
                     >
                         +
-                    </span>
-                </button>
+                    </button>
+                </form>
                 <div className="grid gap-2 overflow-y-auto">
                     {todos.map((todo, index) => {
                         return (
