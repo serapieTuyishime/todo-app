@@ -4,6 +4,6 @@
 
 @layer components {
     .main {
-        @apply w-screen h-screen grid justify-items-center;
+        @apply w-screen h-screen grid place-content-center;
     }
 }
