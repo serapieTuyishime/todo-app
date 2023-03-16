@@ -1,33 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { add } from "../features/todo";
+import { add, updateTodoValue } from "../features/todo";
 import { nanoid } from "nanoid";
 
 function InputArea() {
-    const loadLocalStorage = () => {
-        return window.localStorage.getItem("todos")
-            ? [...JSON.parse(window.localStorage.getItem("todos"))]
-            : [{ text: "initial todo", id: null, checkness: false }];
-    };
     const todo = useSelector((state) => state.todo.value);
-
     const [currentTodo, setCurrentTodo] = useState({
         text: todo.text,
-        id: null,
+        id: todo.id,
+        checkness: todo.checkness,
     });
+    useEffect(() => {
+        setCurrentTodo(todo);
+    }, [todo]);
 
     const dispatch = useDispatch();
 
     const handleTodoChange = (e) => {
         const { value } = e.target;
-        setCurrentTodo({ text: value, id: null, checkness: false });
+        setCurrentTodo({
+            text: value,
+            id: currentTodo.id,
+            checkness: currentTodo.checkness,
+        });
     };
 
     const updateTodoText = () => {
         if (currentTodo.text.trim() === "") return;
-        dispatch(
-            add({ text: currentTodo.text, id: nanoid(), checkness: false })
-        );
+
+        if (currentTodo.id) {
+            dispatch(updateTodoValue(currentTodo));
+        } else {
+            dispatch(
+                add({ text: currentTodo.text, id: nanoid(), checkness: false })
+            );
+        }
         setCurrentTodo({ text: "", id: null, checkness: false });
     };
     return (

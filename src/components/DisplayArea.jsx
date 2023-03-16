@@ -1,7 +1,7 @@
 import React from "react";
 import Todo from "./Todo";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteTodo, updateTodo, selectTodo } from "../features/todo";
+import { deleteTodo, updateTodoCheckness, selectTodo } from "../features/todo";
 
 const DisplayArea = () => {
     const allTodos = useSelector((state) => state.todo.allTodos);
@@ -11,7 +11,7 @@ const DisplayArea = () => {
     }
 
     function changeCheckness(id) {
-        dispatch(updateTodo(id));
+        dispatch(updateTodoCheckness(id));
     }
 
     function todoTextUpdator(id) {
