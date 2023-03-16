@@ -25,7 +25,6 @@ function InputArea() {
 
     const updateTodoText = () => {
         dispatch(add({ text: currentTodo.text, id: nanoid() }));
-        console.log(todo);
     };
     return (
         <div>
