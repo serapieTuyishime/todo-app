@@ -1,7 +1,7 @@
 import React from "react";
 import Todo from "./Todo";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteTodo } from "../features/todo";
+import { deleteTodo, updateTodo, selectTodo } from "../features/todo";
 
 const DisplayArea = () => {
     const allTodos = useSelector((state) => state.todo.allTodos);
@@ -11,7 +11,11 @@ const DisplayArea = () => {
     }
 
     function changeCheckness(id) {
-        console.log("checking a todo");
+        dispatch(updateTodo(id));
+    }
+
+    function todoTextUpdator(id) {
+        dispatch(selectTodo(id));
     }
 
     return (
@@ -25,7 +29,7 @@ const DisplayArea = () => {
                         isChecked={todo.checkness}
                         deleteOneTodo={deleteOneTodo}
                         changeCheckness={changeCheckness}
-                        // todoTextUpdator={todoTextUpdator}
+                        todoTextUpdator={todoTextUpdator}
                     />
                 );
             })}

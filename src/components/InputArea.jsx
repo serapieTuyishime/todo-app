@@ -20,11 +20,15 @@ function InputArea() {
 
     const handleTodoChange = (e) => {
         const { value } = e.target;
-        setCurrentTodo({ text: value, id: null });
+        setCurrentTodo({ text: value, id: null, checkness: false });
     };
 
     const updateTodoText = () => {
-        dispatch(add({ text: currentTodo.text, id: nanoid() }));
+        if (currentTodo.text.trim() === "") return;
+        dispatch(
+            add({ text: currentTodo.text, id: nanoid(), checkness: false })
+        );
+        setCurrentTodo({ text: "", id: null, checkness: false });
     };
     return (
         <div>
