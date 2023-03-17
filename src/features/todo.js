@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const loadLocalStorage = () => {
-    return window.localStorage.getItem("todos")
-        ? [...JSON.parse(window.localStorage.getItem("todos"))]
+    return localStorage.getItem("todos")
+        ? [...JSON.parse(localStorage.getItem("todos"))]
         : [{ text: "From local storage", id: null, checkness: false }];
 };
 const updateLocalStorage = (state) => {
-    window.localStorage.setItem("todos", JSON.stringify(state.allTodos));
+    localStorage.setItem("todos", JSON.stringify(state.allTodos));
 };
 
 const findTodoById = (state, id) => {
