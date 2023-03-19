@@ -1,15 +1,12 @@
+import { useContext } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { Context } from "./Provider";
 
-const Todo = ({
-    text = "This is the todo",
-    id,
-    deleteOneTodo,
-    isChecked,
-    changeCheckness,
-    todoTextUpdator,
-}) => {
+const Todo = ({ text = "This is the todo", id, isChecked }) => {
+    const { selectOneTodo, deleteOneTodo, changeCheckness } =
+        useContext(Context);
     return (
-        <span className="flex gap-4 items-center">
+        <span className="flex items-center gap-4">
             <input
                 type="checkbox"
                 checked={isChecked}
@@ -22,7 +19,7 @@ const Todo = ({
             >
                 {text[0].toUpperCase() + text.slice(1, text.length)}
             </span>
-            <span className="text-xl py-2 px-4 flex gap-2">
+            <span className="flex gap-2 px-4 py-2 text-xl">
                 <span
                     className={`text-red-400 hover:cursor-pointer bg-gray-200 rounded-full p-2`}
                     onClick={() => {
@@ -34,7 +31,7 @@ const Todo = ({
                 <span
                     className={`text-green-400 bg-gray-200 rounded-full p-2 hover:cursor-pointer`}
                     onClick={() => {
-                        todoTextUpdator(id);
+                        selectOneTodo(id);
                     }}
                 >
                     <FaEdit />
