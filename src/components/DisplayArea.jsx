@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Context } from "./Provider";
 import Todo from "./Todo";
 
@@ -11,7 +11,7 @@ const DisplayArea = () => {
                     <Todo
                         text={todo.text}
                         id={todo.id}
-                        key={index}
+                        key={todo.id}
                         isChecked={todo.checkness}
                     />
                 );

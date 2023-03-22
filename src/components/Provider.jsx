@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import React, { useState, createContext } from "react";
+import { useState, createContext } from "react";
 
 export const Context = createContext(null);
 
@@ -26,7 +26,7 @@ const Provider = (props) => {
             ...todos,
             { text: todo.text.trim(), id: nanoid(), checkness: false },
         ]);
-        setCurrentTodo({ text: "", id: null });
+        setCurrentTodo({ text: "", id: null, checkness: false });
         updateLocalStorage();
     };
     const findTodoByID = (id) => todos.findIndex((todo) => todo.id === id);

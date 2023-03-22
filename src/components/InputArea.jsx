@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "./Provider";
 
 const InputArea = () => {
@@ -7,8 +7,8 @@ const InputArea = () => {
 
     const [todo, setTodo] = useState(temporaryTodo);
 
-    const handleTodoChange = (e) => {
-        const { value } = e.target;
+    const handleTodoChange = (inputArea) => {
+        const { value } = inputArea.target;
         setTodo({ text: value, id: temporaryTodo.id, checkness: false });
     };
     useEffect(() => {
@@ -17,7 +17,7 @@ const InputArea = () => {
 
     return (
         <form
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={(form) => form.preventDefault()}
             className="flex items-center w-full gap-2 px-8 py-2 bg-white border rounded-full shadow-md shadow-slate-500 h-14"
         >
             <input
@@ -26,11 +26,11 @@ const InputArea = () => {
                 placeholder="Add todo..."
                 value={todo.text}
                 name="text"
-                onChange={(e) => {
-                    handleTodoChange(e);
+                onChange={(inputArea) => {
+                    handleTodoChange(inputArea);
                 }}
-                onKeyUp={(e) => {
-                    if (e.key === "Enter") {
+                onKeyUp={(pressedKey) => {
+                    if (pressedKey.key === "Enter") {
                         todo.id ? updateTodoText(todo) : increaseTodos(todo);
                     }
                 }}
