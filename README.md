@@ -16,3 +16,11 @@ Owning this project locally
 4. Run on your local machine by `npm start`
 5. Have fun !
 
+
+## iterations i went through in this project
+
+1. Implement the needs of the project
+2. Design basic components and implementing them
+3. implementing the all functionalities using simple statee management
+4. Implementing state management using context api
+5. implementing the state management using Redux
